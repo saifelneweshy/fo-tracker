@@ -64,6 +64,8 @@ h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
 .badge--destructive.badge--subtle{background:var(--bg-destructive);color:var(--txt-destructive);}
 .badge--exceptional.badge--subtle{background:var(--bg-exception);color:var(--txt-link);}
 .badge--neutral{background:var(--bg-tertiary);color:var(--txt-secondary);}
+.badge--highlight{background:#FDF5CB;color:var(--txt-primary);border:1px solid #F6E177;padding:1px 5px;}
+.row--training{background:var(--bg-highlight);border-radius:var(--radius-xs);padding-left:8px !important;padding-right:8px !important;margin:0 -8px;}
 
 /* Change log */
 .changes-list{list-style:none;margin:var(--space-2) 0 0;padding:0;max-height:340px;overflow-y:auto;}
@@ -86,7 +88,7 @@ h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
 .stat-tile .stat-label{font-size:12px;line-height:16px;font-weight:600;color:var(--txt-secondary);}
 .stat-tile .stat-value{font-family:var(--font-headline);font-weight:600;font-size:30px;line-height:36px;margin-top:var(--space-2);letter-spacing:-0.02em;}
 .stat-tile .stat-sub{margin-top:var(--space-1);font-size:12px;line-height:20px;color:var(--txt-secondary);}
-.stat-tile--hero .stat-value{font-size:48px;line-height:52px;}
+.stat-tile--hero .stat-value{font-size:40px;line-height:44px;}
 .stat-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px;}
 
 /* Team cards */
@@ -192,7 +194,7 @@ h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
         <div class="banner banner--success" id="success-banner" style="display:none;"><p>Sync complete — data refreshed from BambooHR and the offers sheet.</p></div>
       </div>
 
-      <div class="card stat-tile stat-tile--hero" style="grid-column:span 4;">
+      <div class="card stat-tile stat-tile--hero" style="grid-column:span 2;">
         <p class="stat-label">Total headcount</p>
         <p class="stat-value skeleton" id="kpi-total">—</p>
         <p class="stat-sub" id="kpi-total-sub">joined + signed future hires</p>
@@ -216,6 +218,11 @@ h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
         <p class="stat-label">Joining soon</p>
         <p class="stat-value skeleton" id="kpi-joining">—</p>
         <p class="stat-sub" id="kpi-joining-sub">signed, not started</p>
+      </div>
+      <div class="card stat-tile" style="grid-column:span 2;">
+        <p class="stat-label"><span class="stat-dot" style="background:#ECCD33;"></span>In training</p>
+        <p class="stat-value skeleton" id="kpi-training">—</p>
+        <p class="stat-sub">joined ≤ 6 weeks ago</p>
       </div>
     </div>
   </section>
@@ -331,6 +338,15 @@ function fmtDate(iso) {
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   if (!y || !m || !d) return String(iso);
   return d + ' ' + months[m - 1] + ' ' + String(y).slice(2);
+}
+
+const FUTURE_STATUSES = ['Not yet joined', 'Offer pending'];
+function isTraining(m) {
+  if (FUTURE_STATUSES.includes(m.status)) return false;
+  const hd = String(m.hireDate || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(hd)) return false;
+  const days = (Date.now() - new Date(hd + 'T00:00:00Z').getTime()) / 86400000;
+  return days >= 0 && days <= 42;
 }
 
 function initials(name) {
@@ -455,6 +471,8 @@ function renderTeams(teams) {
       const genderColor = /^f/i.test(m.gender || '') ? FEMALE_COLOR : (/^m/i.test(m.gender || '') ? MALE_COLOR : '#BDBDBD');
       const future = m.status === 'Not yet joined';
       const pending = m.status === 'Offer pending';
+      const training = isTraining(m);
+      if (training) li.className = 'row--training';
       li.innerHTML =
         '<span class="member-avatar">' + initials(m.name) + '</span>' +
         '<span class="member-main">' +
@@ -466,7 +484,9 @@ function renderTeams(teams) {
             ? '<span class="badge badge--positive badge--subtle-outline badge--semibold">Joins ' + fmtDate(m.hireDate) + '</span>'
             : (pending
               ? '<span class="badge badge--neutral badge--semibold">Pending · ' + fmtDate(m.hireDate) + '</span>'
-              : '<span class="member-meta">' + fmtDate(m.hireDate) + '</span>')) +
+              : (training
+                ? '<span class="badge badge--highlight badge--semibold">Training · ' + fmtDate(m.hireDate) + '</span>'
+                : '<span class="member-meta">' + fmtDate(m.hireDate) + '</span>'))) +
         '</span>';
       ul.appendChild(li);
     });
@@ -521,6 +541,10 @@ function render(data) {
   }
   lastSyncedValue = s['Last Synced'] || null;
   $('last-synced').innerHTML = '<span class="pulse"></span>' + (lastSyncedValue || 'unknown');
+  let trainingCount = 0;
+  const teamsObj = data.teams || {};
+  Object.values(teamsObj).forEach(list => list.forEach(m => { if (isTraining(m)) trainingCount++; }));
+  $('kpi-training').textContent = trainingCount;
   renderDonut(males, females);
   renderTeamBars(data.teams || {});
   renderTeams(data.teams || {});
