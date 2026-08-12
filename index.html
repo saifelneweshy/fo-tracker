@@ -60,7 +60,19 @@ h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
 .badge--subtle-outline{padding:1px 5px;border-width:1px;}
 .badge--positive.badge--subtle,.badge--positive.badge--subtle-outline{background:var(--bg-active);color:var(--txt-active-label);}
 .badge--positive.badge--subtle-outline{border-color:var(--line-subtle-selected);}
+.badge--positive.badge--solid{background:var(--bg-solid-positive);color:var(--txt-inverse-still);}
+.badge--destructive.badge--subtle{background:var(--bg-destructive);color:var(--txt-destructive);}
+.badge--exceptional.badge--subtle{background:var(--bg-exception);color:var(--txt-link);}
 .badge--neutral{background:var(--bg-tertiary);color:var(--txt-secondary);}
+
+/* Change log */
+.changes-list{list-style:none;margin:var(--space-2) 0 0;padding:0;max-height:340px;overflow-y:auto;}
+.changes-list li{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) 0;border-bottom:1px solid var(--line-divider);}
+.changes-list li:last-child{border-bottom:none;}
+.change-badge{width:96px;flex-shrink:0;display:flex;}
+.change-main{flex:1;min-width:0;}
+.change-time{flex-shrink:0;font-size:12px;line-height:16px;color:var(--txt-secondary);white-space:nowrap;}
+.changes-empty{padding:var(--space-6) 0;text-align:center;color:var(--txt-secondary);font-size:14px;line-height:22px;}
 
 /* Header */
 .header{position:sticky;top:0;z-index:50;background:var(--bg-surface);border-bottom:1px solid var(--line-divider);}
@@ -228,8 +240,18 @@ h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
     </div>
   </section>
 
-  <section style="padding:var(--space-4) 0;">
+  <section style="padding:var(--space-4) 0 0;">
     <div class="container" id="team-cards"></div>
+  </section>
+
+  <section style="padding:var(--space-4) 0;">
+    <div class="container">
+      <div class="card" style="grid-column:1 / -1;">
+        <p class="title-medium">Recent changes</p>
+        <p class="paragraph-xsmall" style="margin:2px 0 0;color:var(--txt-secondary);">Everyone added, joined, or removed — tracked automatically on every sync</p>
+        <ul class="changes-list" id="changes-list"></ul>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -432,6 +454,7 @@ function renderTeams(teams) {
       const li = document.createElement('li');
       const genderColor = /^f/i.test(m.gender || '') ? FEMALE_COLOR : (/^m/i.test(m.gender || '') ? MALE_COLOR : '#BDBDBD');
       const future = m.status === 'Not yet joined';
+      const pending = m.status === 'Offer pending';
       li.innerHTML =
         '<span class="member-avatar">' + initials(m.name) + '</span>' +
         '<span class="member-main">' +
@@ -441,12 +464,43 @@ function renderTeams(teams) {
         '<span class="member-right">' +
           (future
             ? '<span class="badge badge--positive badge--subtle-outline badge--semibold">Joins ' + fmtDate(m.hireDate) + '</span>'
-            : '<span class="member-meta">' + fmtDate(m.hireDate) + '</span>') +
+            : (pending
+              ? '<span class="badge badge--neutral badge--semibold">Pending · ' + fmtDate(m.hireDate) + '</span>'
+              : '<span class="member-meta">' + fmtDate(m.hireDate) + '</span>')) +
         '</span>';
       ul.appendChild(li);
     });
     card.appendChild(ul);
     wrap.appendChild(card);
+  });
+}
+
+function renderChanges(changes) {
+  const ul = $('changes-list');
+  ul.innerHTML = '';
+  if (!changes || !changes.length) {
+    ul.innerHTML = '<li style="border:none;"><span class="changes-empty" style="width:100%;">No changes recorded yet — the log starts tracking from today. New joiners, signed offers, and removals will appear here.</span></li>';
+    return;
+  }
+  const badgeFor = c => {
+    const t = (c || '').toLowerCase();
+    if (t === 'added') return '<span class="badge badge--positive badge--subtle-outline badge--semibold">Added</span>';
+    if (t === 'joined') return '<span class="badge badge--positive badge--solid badge--semibold">Joined</span>';
+    if (t === 'offer signed') return '<span class="badge badge--exceptional badge--subtle badge--semibold">Offer signed</span>';
+    if (t === 'removed') return '<span class="badge badge--destructive badge--subtle badge--semibold">Removed</span>';
+    return '<span class="badge badge--neutral badge--semibold">' + c + '</span>';
+  };
+  changes.slice(0, 50).forEach(c => {
+    const li = document.createElement('li');
+    const teamColor = TEAM_COLORS[c.Team] || '#BDBDBD';
+    li.innerHTML =
+      '<span class="change-badge">' + badgeFor(c.Change) + '</span>' +
+      '<span class="change-main">' +
+        '<span class="member-name">' + (c.Name || '') + '</span>' +
+        '<span class="member-meta"><span class="stat-dot" style="background:' + teamColor + ';width:6px;height:6px;margin-right:4px;"></span>' + (c.Team || '') + (c.Details ? ' · ' + c.Details : '') + '</span>' +
+      '</span>' +
+      '<span class="change-time">' + (c.Timestamp || '') + '</span>';
+    ul.appendChild(li);
   });
 }
 
@@ -470,6 +524,7 @@ function render(data) {
   renderDonut(males, females);
   renderTeamBars(data.teams || {});
   renderTeams(data.teams || {});
+  renderChanges(data.changes || []);
   $('error-banner').style.display = 'none';
 }
 
