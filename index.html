@@ -30,7 +30,12 @@
 @media (max-width:1279px){:root{--grid-container:944px;}}
 @media (max-width:768px){:root{--grid-container:704px;}}
 *{box-sizing:border-box;}
-body{margin:0;background:var(--bg-secondary);font-family:var(--font-body);font-size:16px;line-height:24px;color:var(--txt-primary);}
+body{margin:0;background:#EDF1ED;font-family:var(--font-body);font-size:16px;line-height:24px;color:var(--txt-primary);min-height:100vh;}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+ radial-gradient(600px 420px at 12% -5%, rgba(68,181,12,0.16), transparent 65%),
+ radial-gradient(720px 480px at 88% 8%, rgba(1,108,213,0.12), transparent 65%),
+ radial-gradient(640px 520px at 50% 110%, rgba(255,128,0,0.08), transparent 60%),
+ linear-gradient(180deg,#F4F7F3 0%,#EDF1ED 45%,#EAF0EE 100%);}
 h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
 .title-medium{font-size:16px;line-height:20px;font-weight:600;}
 .title-small{font-size:14px;line-height:18px;font-weight:600;}
@@ -77,18 +82,45 @@ h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
 .changes-empty{padding:var(--space-6) 0;text-align:center;color:var(--txt-secondary);font-size:14px;line-height:22px;}
 
 /* Header */
-.header{position:sticky;top:0;z-index:50;background:var(--bg-surface);border-bottom:1px solid var(--line-divider);}
+.header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.7);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(255,255,255,0.6);box-shadow:0 1px 18px rgba(29,29,29,0.05);}
 .header__inner{max-width:var(--grid-container);margin:0 auto;height:64px;display:flex;align-items:center;gap:var(--space-4);padding:0 var(--space-4);}
 .header__logo svg{height:30px;width:auto;display:block;}
 .header__divider{width:1px;height:24px;background:var(--line-inactive);}
 .header__right{margin-left:auto;display:flex;align-items:center;gap:var(--space-4);}
 
 /* Cards & tiles */
-.card{background:var(--bg-surface);border-radius:var(--radius-md);box-shadow:var(--dropshadow-8);padding:var(--space-6);}
-.stat-tile .stat-label{font-size:12px;line-height:16px;font-weight:600;color:var(--txt-secondary);}
-.stat-tile .stat-value{font-family:var(--font-headline);font-weight:600;font-size:30px;line-height:36px;margin-top:var(--space-2);letter-spacing:-0.02em;}
-.stat-tile .stat-sub{margin-top:var(--space-1);font-size:12px;line-height:20px;color:var(--txt-secondary);}
+.card{background:rgba(255,255,255,0.62);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);border:1px solid rgba(255,255,255,0.75);border-radius:22px;box-shadow:0 10px 34px rgba(29,29,29,0.08),inset 0 1px 0 rgba(255,255,255,0.85);padding:var(--space-5) var(--space-6);}
+.card--accent{background:linear-gradient(135deg,rgba(68,181,12,0.94),rgba(24,137,32,0.96));border:1px solid rgba(255,255,255,0.4);box-shadow:0 12px 36px rgba(24,137,32,0.32),inset 0 1px 0 rgba(255,255,255,0.35);}
+.card--accent .stat-label{color:rgba(255,255,255,0.9);}
+.card--accent .stat-value{color:#FFFFFF;}
+.card--accent .stat-sub{color:rgba(255,255,255,0.8);}
+.glance{grid-column:1 / -1;display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-5);border-radius:999px;}
+.glance p{margin:0;font-size:14px;line-height:20px;color:var(--txt-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.glance strong{color:var(--txt-primary);font-weight:700;}
+.glance__icon{width:24px;height:24px;border-radius:8px;background:var(--cta-primary);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;}
+.stat-label{font-size:12px;line-height:16px;font-weight:600;color:var(--txt-secondary);}
+.stat-value{font-family:var(--font-headline);font-weight:700;font-size:32px;line-height:38px;margin-top:var(--space-1);letter-spacing:-0.02em;}
+.stat-sub{margin-top:2px;font-size:12px;line-height:18px;color:var(--txt-secondary);}
 .stat-tile--hero .stat-value{font-size:40px;line-height:44px;}
+.stat-group{display:flex;align-items:stretch;}
+.stat-cell{flex:1;padding:0 var(--space-6);}
+.stat-cell:first-child{padding-left:0;}
+.stat-cell + .stat-cell{border-left:1px solid rgba(29,29,29,0.08);}
+.stat-group,.stat-tile{display:flex;}
+.stat-tile{flex-direction:column;justify-content:center;}
+.stat-cell{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
+.card--accent.stat-tile{align-items:center;text-align:center;}
+.card{transition:transform 0.2s ease,box-shadow 0.2s ease;}
+.card:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(29,29,29,0.11),inset 0 1px 0 rgba(255,255,255,0.85);}
+.stat-value--hero{font-size:46px !important;line-height:50px !important;}
+.gender-band{display:flex;align-items:center;gap:var(--space-8);}
+.gender-end{width:170px;flex-shrink:0;}
+.gender-end--right{text-align:right;}
+.gender-mid{flex:1;min-width:0;}
+.split-bar{display:flex;height:28px;gap:2px;}
+.split-seg{height:28px;transition:width 0.4s ease;cursor:default;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;overflow:hidden;}
+.split-seg--m{background:var(--blue-400);border-radius:4px 0 0 4px;}
+.split-seg--f{background:var(--green-400);border-radius:0 4px 4px 0;}
 .stat-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px;}
 
 /* Team cards */
@@ -113,12 +145,14 @@ h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
 .bar-row{display:flex;align-items:center;gap:var(--space-3);margin-top:var(--space-4);}
 .bar-row__label{width:64px;flex-shrink:0;font-size:14px;line-height:18px;font-weight:600;}
 .bar-row__track{flex:1;display:flex;align-items:center;gap:2px;height:24px;}
-.bar-seg{height:24px;border-radius:0 4px 4px 0;min-width:0;transition:width 0.4s ease;cursor:default;}
+.bar-seg{height:24px;border-radius:0 4px 4px 0;min-width:0;transition:width 0.4s ease;cursor:default;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;overflow:hidden;}
+.bar-seg--solid{color:#fff;}
+.bar-seg--light{color:var(--txt-primary);}
 .bar-seg:first-child{border-radius:4px;}
 .bar-row__value{width:34px;flex-shrink:0;font-size:14px;line-height:18px;font-weight:600;color:var(--txt-primary);}
 
 /* Tooltip */
-.viz-tip{position:fixed;z-index:99;pointer-events:none;background:var(--bg-surface);box-shadow:var(--dropshadow-24);border-radius:var(--radius-sm);padding:var(--space-2) var(--space-3);font-size:12px;line-height:18px;display:none;}
+.viz-tip{position:fixed;z-index:99;pointer-events:none;background:rgba(255,255,255,0.85);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.8);box-shadow:var(--dropshadow-24);border-radius:12px;padding:var(--space-2) var(--space-3);font-size:12px;line-height:18px;display:none;}
 .viz-tip strong{display:block;font-weight:600;}
 
 /* Banner */
@@ -134,7 +168,8 @@ h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
 
 /* Access gate */
 .gate{position:fixed;inset:0;z-index:200;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;padding:var(--space-4);}
-.gate__card{background:var(--bg-surface);border-radius:var(--radius-md);box-shadow:var(--dropshadow-24);padding:var(--space-8);width:100%;max-width:400px;text-align:center;}
+.gate{background:transparent;}
+.gate__card{background:rgba(255,255,255,0.68);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);border:1px solid rgba(255,255,255,0.8);border-radius:26px;box-shadow:0 18px 48px rgba(29,29,29,0.14),inset 0 1px 0 rgba(255,255,255,0.9);padding:var(--space-8);width:100%;max-width:400px;text-align:center;}
 .gate__logo svg{height:34px;width:auto;display:inline-block;}
 .input-textfield{text-align:left;margin-top:var(--space-6);}
 .input-textfield__label{display:block;font-size:12px;line-height:16px;font-weight:600;color:var(--txt-secondary);margin-bottom:var(--space-1);}
@@ -194,51 +229,65 @@ h1,h2,h3,h4{font-family:var(--font-headline);letter-spacing:-0.02em;margin:0;}
         <div class="banner banner--success" id="success-banner" style="display:none;"><p>Sync complete — data refreshed from BambooHR and the offers sheet.</p></div>
       </div>
 
-      <div class="card stat-tile stat-tile--hero" style="grid-column:span 2;">
-        <p class="stat-label">Total headcount</p>
-        <p class="stat-value skeleton" id="kpi-total">—</p>
-        <p class="stat-sub" id="kpi-total-sub">joined + signed future hires</p>
+      <div class="card glance">
+        <span class="glance__icon">✦</span>
+        <p id="glance-line">Loading live data…</p>
       </div>
-      <div class="card stat-tile" style="grid-column:span 2;">
-        <p class="stat-label">Currently active</p>
-        <p class="stat-value skeleton" id="kpi-active">—</p>
-        <p class="stat-sub">on board today</p>
+
+      <div class="card" style="grid-column:span 8;">
+        <div class="stat-group">
+          <div class="stat-cell">
+            <p class="stat-label">Total headcount</p>
+            <p class="stat-value stat-value--hero skeleton" id="kpi-total">—</p>
+            <p class="stat-sub" id="kpi-total-sub">joined + signed future hires</p>
+          </div>
+          <div class="stat-cell">
+            <p class="stat-label">Currently active</p>
+            <p class="stat-value skeleton" id="kpi-active">—</p>
+            <p class="stat-sub">on board today</p>
+          </div>
+          <div class="stat-cell">
+            <p class="stat-label"><span class="stat-dot" style="background:#ECCD33;"></span>In training</p>
+            <p class="stat-value skeleton" id="kpi-training">—</p>
+            <p class="stat-sub">joined ≤ 6 weeks ago</p>
+          </div>
+        </div>
       </div>
-      <div class="card stat-tile" style="grid-column:span 2;">
-        <p class="stat-label"><span class="stat-dot" style="background:var(--blue-400);"></span>Males</p>
-        <p class="stat-value skeleton" id="kpi-males">—</p>
-        <p class="stat-sub" id="kpi-males-sub">—</p>
-      </div>
-      <div class="card stat-tile" style="grid-column:span 2;">
-        <p class="stat-label"><span class="stat-dot" style="background:var(--green-400);"></span>Females</p>
-        <p class="stat-value skeleton" id="kpi-females">—</p>
-        <p class="stat-sub" id="kpi-females-sub">—</p>
-      </div>
-      <div class="card stat-tile" style="grid-column:span 2;">
-        <p class="stat-label">Joining soon</p>
+      <div class="card card--accent stat-tile" style="grid-column:span 4;">
+        <p class="stat-label"><span class="stat-dot" style="background:rgba(255,255,255,0.9);"></span>Joining soon</p>
         <p class="stat-value skeleton" id="kpi-joining">—</p>
         <p class="stat-sub" id="kpi-joining-sub">signed, not started</p>
       </div>
-      <div class="card stat-tile" style="grid-column:span 2;">
-        <p class="stat-label"><span class="stat-dot" style="background:#ECCD33;"></span>In training</p>
-        <p class="stat-value skeleton" id="kpi-training">—</p>
-        <p class="stat-sub">joined ≤ 6 weeks ago</p>
+    </div>
+    </div>
+  </section>
+
+  <section style="padding:var(--space-4) 0 0;">
+    <div class="container">
+      <div class="card" style="grid-column:1 / -1;">
+        <div class="gender-band">
+          <div class="gender-end">
+            <p class="stat-label"><span class="stat-dot" style="background:var(--blue-400);"></span>Males</p>
+            <p class="stat-value skeleton" id="kpi-males">—</p>
+            <p class="stat-sub" id="kpi-males-sub">—</p>
+          </div>
+          <div class="gender-mid">
+            <p class="paragraph-xsmall" style="margin:0 0 var(--space-2);color:var(--txt-secondary);text-align:center;" id="gender-ratio-line">—</p>
+            <div class="split-bar" id="split-bar"></div>
+          </div>
+          <div class="gender-end gender-end--right">
+            <p class="stat-label" style="justify-content:flex-end;"><span class="stat-dot" style="background:var(--green-400);"></span>Females</p>
+            <p class="stat-value skeleton" id="kpi-females">—</p>
+            <p class="stat-sub" id="kpi-females-sub">—</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <section style="padding:var(--space-4) 0 0;">
     <div class="container">
-      <div class="card" style="grid-column:span 5;">
-        <p class="title-medium">Gender split</p>
-        <p class="paragraph-xsmall" style="margin:2px 0 0;color:var(--txt-secondary);" id="gender-ratio-line">—</p>
-        <div style="display:flex;justify-content:center;padding:var(--space-4) 0 0;">
-          <svg class="chart-svg" id="donut" viewBox="0 0 220 220" style="max-width:220px;" role="img" aria-label="Gender split donut chart"></svg>
-        </div>
-        <div class="legend" id="gender-legend"></div>
-      </div>
-
-      <div class="card" style="grid-column:span 7;">
+      <div class="card" style="grid-column:1 / -1;">
         <p class="title-medium">Team distribution</p>
         <p class="paragraph-xsmall" style="margin:2px 0 0;color:var(--txt-secondary);">People per team lead — joined vs joining soon</p>
         <div id="team-bars"></div>
@@ -354,59 +403,26 @@ function initials(name) {
   return (parts[0] ? parts[0][0] : '') + (parts[1] ? parts[1][0] : '');
 }
 
-function polar(cx, cy, r, deg) {
-  const rad = (deg - 90) * Math.PI / 180;
-  return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
-}
-function arcPath(cx, cy, rOuter, rInner, a0, a1) {
-  const [x0, y0] = polar(cx, cy, rOuter, a0), [x1, y1] = polar(cx, cy, rOuter, a1);
-  const [x2, y2] = polar(cx, cy, rInner, a1), [x3, y3] = polar(cx, cy, rInner, a0);
-  const large = (a1 - a0) > 180 ? 1 : 0;
-  return `M ${x0} ${y0} A ${rOuter} ${rOuter} 0 ${large} 1 ${x1} ${y1} L ${x2} ${y2} A ${rInner} ${rInner} 0 ${large} 0 ${x3} ${y3} Z`;
-}
-
-function renderDonut(males, females) {
-  const svg = $('donut');
+function renderGenderBar(males, females) {
   const total = males + females;
-  svg.innerHTML = '';
+  const bar = $('split-bar');
+  bar.innerHTML = '';
   if (!total) return;
-  const cx = 110, cy = 110, rO = 100, rI = 64;
-  const gapDeg = 2.5;
-  const segs = [
-    { label: 'Male', value: males, color: MALE_COLOR },
-    { label: 'Female', value: females, color: FEMALE_COLOR }
-  ].filter(s => s.value > 0);
-  let angle = 0;
-  const totalGap = segs.length > 1 ? gapDeg * segs.length : 0;
-  const usable = 360 - totalGap;
-  segs.forEach(s => {
-    const sweep = usable * s.value / total;
-    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    p.setAttribute('d', arcPath(cx, cy, rO, rI, angle, angle + sweep));
-    p.setAttribute('fill', s.color);
-    const pct = (100 * s.value / total).toFixed(1);
-    p.addEventListener('mousemove', e => showTip(e, s.label, s.value + ' people · ' + pct + '%'));
-    p.addEventListener('mouseleave', hideTip);
-    svg.appendChild(p);
-    angle += sweep + gapDeg;
-  });
-  const t1 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  t1.setAttribute('x', cx); t1.setAttribute('y', cy - 2);
-  t1.setAttribute('text-anchor', 'middle');
-  t1.setAttribute('style', 'font:600 30px Inter,sans-serif;fill:#1D1D1D;letter-spacing:-0.02em;');
-  t1.textContent = total;
-  const t2 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  t2.setAttribute('x', cx); t2.setAttribute('y', cy + 20);
-  t2.setAttribute('text-anchor', 'middle');
-  t2.setAttribute('style', 'font:400 12px Inter,sans-serif;fill:#767676;');
-  t2.textContent = 'people';
-  svg.appendChild(t1); svg.appendChild(t2);
-
   const pctM = (100 * males / total).toFixed(1), pctF = (100 * females / total).toFixed(1);
-  $('gender-legend').innerHTML =
-    '<span class="legend__item"><span class="legend__swatch" style="background:' + MALE_COLOR + ';"></span>Male · <strong style="color:var(--txt-primary);">' + males + '</strong>&nbsp;(' + pctM + '%)</span>' +
-    '<span class="legend__item"><span class="legend__swatch" style="background:' + FEMALE_COLOR + ';"></span>Female · <strong style="color:var(--txt-primary);">' + females + '</strong>&nbsp;(' + pctF + '%)</span>';
-  $('gender-ratio-line').textContent = 'Ratio ' + pctM + '% male / ' + pctF + '% female';
+  const segM = document.createElement('div');
+  segM.className = 'split-seg split-seg--m';
+  segM.style.width = (100 * males / total) + '%';
+  if (males / total > 0.12) segM.textContent = pctM + '%';
+  segM.addEventListener('mousemove', e => showTip(e, 'Male', males + ' people · ' + pctM + '%'));
+  segM.addEventListener('mouseleave', hideTip);
+  const segF = document.createElement('div');
+  segF.className = 'split-seg split-seg--f';
+  segF.style.width = (100 * females / total) + '%';
+  if (females / total > 0.12) segF.textContent = pctF + '%';
+  segF.addEventListener('mousemove', e => showTip(e, 'Female', females + ' people · ' + pctF + '%'));
+  segF.addEventListener('mouseleave', hideTip);
+  bar.appendChild(segM); bar.appendChild(segF);
+  $('gender-ratio-line').textContent = 'Gender ratio · ' + pctM + '% male / ' + pctF + '% female';
 }
 
 function renderTeamBars(teams) {
@@ -422,18 +438,19 @@ function renderTeamBars(teams) {
     row.className = 'bar-row';
     const track = document.createElement('div');
     track.className = 'bar-row__track';
-    const mk = (val, color, label) => {
+    const mk = (val, color, label, solid) => {
       if (!val) return;
       const seg = document.createElement('div');
-      seg.className = 'bar-seg';
+      seg.className = 'bar-seg ' + (solid ? 'bar-seg--solid' : 'bar-seg--light');
       seg.style.background = color;
       seg.style.width = (100 * val / max) + '%';
+      if (val / max > 0.07) seg.textContent = val;
       seg.addEventListener('mousemove', e => showTip(e, t + ' — ' + label, val + ' people'));
       seg.addEventListener('mouseleave', hideTip);
       track.appendChild(seg);
     };
-    mk(joined, TEAM_COLORS[t], 'joined');
-    mk(joining, TEAM_COLORS_LIGHT[t], 'joining soon');
+    mk(joined, TEAM_COLORS[t], 'joined', true);
+    mk(joining, TEAM_COLORS_LIGHT[t], 'joining soon', false);
     const lbl = document.createElement('span');
     lbl.className = 'bar-row__label';
     lbl.textContent = t;
@@ -453,7 +470,9 @@ function renderTeams(teams) {
   wrap.innerHTML = '';
   TEAM_ORDER.forEach(t => {
     const members = (teams[t] || []).slice().sort((a, b) =>
-      String(a.hireDate).localeCompare(String(b.hireDate)) || String(a.name).localeCompare(String(b.name)));
+      String(a.hireDate || '9999').localeCompare(String(b.hireDate || '9999')) ||
+      String(a.offerDate || '9999').localeCompare(String(b.offerDate || '9999')) ||
+      String(a.name).localeCompare(String(b.name)));
     const card = document.createElement('div');
     card.className = 'card team-card';
     card.style.gridColumn = 'span 4';
@@ -477,7 +496,7 @@ function renderTeams(teams) {
         '<span class="member-avatar">' + initials(m.name) + '</span>' +
         '<span class="member-main">' +
           '<span class="member-name">' + m.name + '</span>' +
-          '<span class="member-meta"><span class="stat-dot" style="background:' + genderColor + ';width:6px;height:6px;margin-right:4px;"></span>' + (m.title || '') + '</span>' +
+          '<span class="member-meta"><span class="stat-dot" style="background:' + genderColor + ';width:6px;height:6px;margin-right:4px;"></span>' + ((future || pending) && m.offerDate ? 'Offered ' + fmtDate(m.offerDate) : (m.title || '')) + '</span>' +
         '</span>' +
         '<span class="member-right">' +
           (future
@@ -524,16 +543,37 @@ function renderChanges(changes) {
   });
 }
 
+let firstRender = true;
+function countUp(id, target) {
+  const el = $(id);
+  if (!firstRender) { el.textContent = target; return; }
+  const dur = 700, start = performance.now();
+  const step = now => {
+    const t = Math.min(1, (now - start) / dur);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - t, 3)));
+    if (t < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
 function render(data) {
   currentData = data;
   const s = data.summary || {};
   document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
   const males = num(s['Males']), females = num(s['Females']);
-  $('kpi-total').textContent = num(s['Total Headcount']);
-  $('kpi-active').textContent = num(s['Currently Active']);
-  $('kpi-males').textContent = males;
-  $('kpi-females').textContent = females;
-  $('kpi-joining').textContent = num(s['Not Yet Joined (future hires)']);
+  countUp('kpi-total', num(s['Total Headcount']));
+  countUp('kpi-active', num(s['Currently Active']));
+  countUp('kpi-males', males);
+  countUp('kpi-females', females);
+  countUp('kpi-joining', num(s['Not Yet Joined (future hires)']));
+  const futureDates = [];
+  Object.values(data.teams || {}).forEach(list => list.forEach(m => {
+    if (FUTURE_STATUSES.includes(m.status) && m.hireDate) futureDates.push(String(m.hireDate).slice(0, 10));
+  }));
+  if (futureDates.length) {
+    futureDates.sort();
+    $('kpi-joining-sub').textContent = 'signed, not started · next batch ' + fmtDate(futureDates[0]);
+  }
   const known = males + females;
   if (known) {
     $('kpi-males-sub').textContent = (100 * males / known).toFixed(1) + '% of team';
@@ -544,11 +584,34 @@ function render(data) {
   let trainingCount = 0;
   const teamsObj = data.teams || {};
   Object.values(teamsObj).forEach(list => list.forEach(m => { if (isTraining(m)) trainingCount++; }));
-  $('kpi-training').textContent = trainingCount;
-  renderDonut(males, females);
+  countUp('kpi-training', trainingCount);
+  const totalN = num(s['Total Headcount']), activeN = num(s['Currently Active']), joiningN = num(s['Not Yet Joined (future hires)']);
+  const pctMale = known ? Math.round(100 * males / known) : 0;
+  const pctFemale = known ? 100 - pctMale : 0;
+  $('glance-line').innerHTML =
+    '<strong>' + totalN + '</strong> people&nbsp;&nbsp;·&nbsp;&nbsp;<strong>' + activeN + '</strong> active' +
+    (trainingCount ? ' incl. <strong>' + trainingCount + '</strong> in training' : '') +
+    '&nbsp;&nbsp;·&nbsp;&nbsp;<strong>' + joiningN + '</strong> joining soon' +
+    '&nbsp;&nbsp;·&nbsp;&nbsp;<strong>' + pctMale + '%</strong> male / <strong>' + pctFemale + '%</strong> female' +
+    '&nbsp;&nbsp;·&nbsp;&nbsp;Hasnaa <strong>' + num(s['Team - Hasnaa']) + '</strong> · Ola <strong>' + num(s['Team - Ola']) + '</strong> · Selim <strong>' + num(s['Team - Selim']) + '</strong>';
+  const weekAgo = Date.now() - 7 * 86400000;
+  let wAdded = 0, wRemoved = 0;
+  (data.changes || []).forEach(c => {
+    const d = new Date(String(c.Timestamp || '').slice(0, 10) + 'T00:00:00Z').getTime();
+    if (!isNaN(d) && d >= weekAgo) {
+      if (c.Change === 'Added') wAdded++;
+      if (c.Change === 'Removed') wRemoved++;
+    }
+  });
+  const net = wAdded - wRemoved;
+  $('kpi-total-sub').innerHTML = 'joined + signed future hires' +
+    (net !== 0 ? ' · <span style="font-weight:700;color:' + (net > 0 ? '#188920' : '#CF000F') + ';">' + (net > 0 ? '▲ +' : '▼ ') + net + ' this week</span>'
+      : (wAdded || wRemoved ? ' · <span style="font-weight:600;color:var(--txt-secondary);">±' + wAdded + ' this week</span>' : ''));
+  renderGenderBar(males, females);
   renderTeamBars(data.teams || {});
   renderTeams(data.teams || {});
   renderChanges(data.changes || []);
+  firstRender = false;
   $('error-banner').style.display = 'none';
 }
 
